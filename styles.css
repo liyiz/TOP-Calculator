@@ -51,7 +51,7 @@ main {
     
 }
 
-#buttons button {
+#buttons button.calcBtn {
     
     flex: 1 1 60px;
 

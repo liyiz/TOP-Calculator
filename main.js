@@ -1,4 +1,8 @@
 // When page loads
+document.addEventListener("DOMContentLoaded", (event) => {
+    // console.log("DOM fully loaded and parsed");
+    setupEventListeners();
+});
 
 // When buttons are pressed
 
@@ -32,4 +36,8 @@ function multiply(a, b) {
 
 function divide(a, b) {
     return a / b;
+}
+
+function setupEventListeners() {
+    
 }
