@@ -13,7 +13,6 @@ let operandB = null;
 let operator = null;
 
 
-
 // When buttons are pressed
 
 function updateDisplay(char) {
@@ -50,20 +49,40 @@ function clearMemory() {
     // updateDisplay();
 }
 
+function manageOperator(input) {
+    console.log("Received operator:", input);
+    operator = input;
+}
+
 function handleClick(e) {
     console.log(e.target.dataset.type);
 
+    const btnLabel = e.target.dataset.label;
+    const btnType = e.target.dataset.type;
+
     // reference data attribute if it exists
-    if (e.target.dataset.type === "operand") {
+    if (btnType === 'operand') {
         // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
         // appears as DOMStringMap, 
         // and dashes from html are converted to camel case
         // e.g data-my-data -> myData
         // console.log(e.target.dataset);
-        updateDisplay(e.target.dataset.label);
+        updateDisplay(btnLabel);
     }
-    if (e.target.dataset.label === "clear") {
+    if (btnLabel === 'clear') {
         clearMemory();
+    }
+    if (btnLabel === '=') {
+
+        // check that arguments exist as variables before calling function
+        if (operator && operandA && operandB) {
+            operate(operator, operandA, operandB);
+        } else {
+            console.log("Cannot perform operation: Operands and/or operator missing.")
+        }
+    }
+    if (btnType === 'operator') {
+        manageOperator(btnLabel);
     }
 }
 
