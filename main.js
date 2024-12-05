@@ -7,12 +7,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 let currDisplay = "0";
-let state = {
-    operandA: 0,
-    operandB: null,
-    operator: null,
-    operandSubmits: 0 // do I need to track how many submissions made?
-};
+
+let operandA = 0;
+let operandB = null;
+let operator = null;
+
+
 
 // When buttons are pressed
 
@@ -23,25 +23,6 @@ function updateDisplay(char) {
 }
 
 function manageState(input) {
-    // check if we are on first or second input
-    // if first input,
-    if(state.operandSubmits === 0) {
-        // we are on first input
-        // check if first input is a zero
-        // if first input is a zero
-        if (operandA === 0) {
-
-        } else {
-            // if first input is not a zero
-
-        }
-        
-    }
-
-    // if second input,
-    if(state.operandSubmits === 1) {
-        // we are on second input
-    }
 
     updateDisplay();
 
@@ -49,9 +30,9 @@ function manageState(input) {
 
 
 function clearMemory() {
-    state.operandA = 0;
-    state.operandB = null;
-    state.operator = null;
+    operandA = 0;
+    operandB = null;
+    operator = null;
     // updateDisplay();
 }
 
