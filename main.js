@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 let currDisplay = "0";
-let currOperation = {
+let state = {
     operandA: 0,
     operandB: null,
     operator: null
@@ -22,14 +22,28 @@ function updateDisplay(char) {
 }
 
 function manageState(input) {
-    
+    // check if we are on first or second input
+    if()
+
+
+    // if first input,
+    // check if first input is a zero
+    // if first input is a zero
+    // if first input is not a zero
+
+    // if second input,
+    // 
+
+
+
+
 }
 
 
 function clearMemory() {
-    currOperation.operandA = 0;
-    currOperation.operandB = null;
-    currOperation.operator = null;
+    state.operandA = 0;
+    state.operandB = null;
+    state.operator = null;
     // updateDisplay();
 }
 
