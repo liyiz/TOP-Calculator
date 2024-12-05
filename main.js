@@ -3,10 +3,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("DOM fully loaded and parsed");
     setupEventListeners();
 
-    updateDisplay(currDisplay);
+    updateDisplay('0');
 });
 
-let currDisplay = "0";
+let currDisplay = '';
 
 let operandA = 0;
 let operandB = null;
@@ -18,16 +18,30 @@ let operator = null;
 
 function updateDisplay(char) {
     const display = document.querySelector('#display');
-
-    display.textContent = char;
+    currDisplay += char;
+    display.textContent = currDisplay;
 }
 
-function manageState(input) {
+// function manageState(input) {
+//     // Do calculator logic here
 
-    updateDisplay();
+//     updateDisplay();
 
+// }
+
+
+function manageNum(num) {
+    console.log(num);
+    if(operandA == 0) {
+        operandA = 0;
+    } else {
+        operandA = parseInt(num);
+    }
+
+    updateDisplay(operandA);
+
+    console.table([operandA, operandB, operator]);
 }
-
 
 function clearMemory() {
     operandA = 0;
@@ -37,16 +51,16 @@ function clearMemory() {
 }
 
 function handleClick(e) {
-    console.log(e.target.dataset.label);
+    console.log(e.target.dataset.type);
 
     // reference data attribute if it exists
-    if (e.target.dataset.operand) {
+    if (e.target.dataset.type === "operand") {
         // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
         // appears as DOMStringMap, 
         // and dashes from html are converted to camel case
         // e.g data-my-data -> myData
         // console.log(e.target.dataset);
-        manageState(e.target.dataset.operand);
+        updateDisplay(e.target.dataset.label);
     }
     if (e.target.dataset.label === "clear") {
         clearMemory();
