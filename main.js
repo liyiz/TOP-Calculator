@@ -10,7 +10,8 @@ let currDisplay = "0";
 let state = {
     operandA: 0,
     operandB: null,
-    operator: null
+    operator: null,
+    userInputs: 0
 };
 
 // When buttons are pressed
@@ -23,7 +24,7 @@ function updateDisplay(char) {
 
 function manageState(input) {
     // check if we are on first or second input
-    if()
+    if(state.operandA != 0) {}
 
 
     // if first input,
