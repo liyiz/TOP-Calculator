@@ -2,9 +2,45 @@
 document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("DOM fully loaded and parsed");
     setupEventListeners();
+
+    updateDisplay(currDisplay);
 });
 
+let currDisplay = "0";
+let currOperation = {
+    operandA: 0,
+    operandB: null,
+    operator: null
+};
+
 // When buttons are pressed
+
+function updateDisplay(char) {
+    const display = document.querySelector('#display');
+
+    display.textContent = char;
+}
+
+function manageNum(input) {
+    // input is a string
+
+    if (!input === "0") {
+        currDisplay += input;
+        updateDisplay(currDisplay);
+    }
+    if (input === "0") {
+        return;
+    }
+
+
+}
+
+function clearMemory() {
+    currOperation.operandA = 0;
+    currOperation.operandB = null;
+    currOperation.operator = null;
+    // updateDisplay();
+}
 
 function handleClick(e) {
     console.log("I've been clicked", e);
@@ -16,6 +52,10 @@ function handleClick(e) {
         // and dashes from html are converted to camel case
         // e.g data-my-data -> myData
         console.log(e.target.dataset);
+        manageNum(e.target.dataset.label);
+    }
+    if (e.target.dataset.label === "clear") {
+        clearMemory();
     }
 }
 
