@@ -6,6 +6,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 // When buttons are pressed
 
+function handleClick(e) {
+    console.log("I've been clicked", e);
+}
+
 function operate(operator, a, b) {
     let output = 0;
     if (operator === 'add') {
@@ -39,5 +43,7 @@ function divide(a, b) {
 }
 
 function setupEventListeners() {
-    
+    // const allBtns = document.querySelector('.calcBtn');
+    const allBtns = document.querySelectorAll('.calcBtn');
+    allBtns.forEach((el) => {el.addEventListener('click', handleClick);})
 }
