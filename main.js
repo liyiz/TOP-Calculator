@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 let currDisplay = '';
 
-let operandA = 0;
+let operandA = null;
 let operandB = null;
 let operator = null;
 
@@ -43,15 +43,23 @@ function manageNum(num) {
 }
 
 function clearMemory() {
-    operandA = 0;
+    operandA = null;
     operandB = null;
     operator = null;
-    // updateDisplay();
+    updateDisplay('0');
 }
 
 function manageOperator(input) {
     console.log("Received operator:", input);
     operator = input;
+
+    const display = document.querySelector('#display');
+    if (operandA === null) {
+        operandA = parseInt(display.textContent);
+    }
+
+    updateDisplay('0');
+
 }
 
 function handleClick(e) {
@@ -74,9 +82,15 @@ function handleClick(e) {
     }
     if (btnLabel === '=') {
 
+        const display = document.querySelector('#display');
+        if (operandB === null) {
+            operandB = parseInt(display.textContent);
+        }
+
         // check that arguments exist as variables before calling function
         if (operator && operandA && operandB) {
-            operate(operator, operandA, operandB);
+            const result = operate(operator, operandA, operandB);
+            updateDisplay(result);
         } else {
             console.log("Cannot perform operation: Operands and/or operator missing.")
         }
@@ -100,6 +114,7 @@ function operate(operator, a, b) {
     if (operator === 'divide') {
         output = divide(a, b);
     }
+    return output;
 }
 
 function add(a, b) {
