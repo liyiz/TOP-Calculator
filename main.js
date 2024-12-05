@@ -8,6 +8,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 function handleClick(e) {
     console.log("I've been clicked", e);
+
+    // reference data attribute if it exists
+    if (e.target.dataset) {
+        // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
+        // appears as DOMStringMap, 
+        // and dashes from html are converted to camel case
+        // e.g data-my-data -> myData
+        console.log(e.target.dataset);
+    }
 }
 
 function operate(operator, a, b) {
