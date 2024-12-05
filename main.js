@@ -21,19 +21,10 @@ function updateDisplay(char) {
     display.textContent = char;
 }
 
-function manageNum(input) {
-    // input is a string
-
-    if (!input === "0") {
-        currDisplay += input;
-        updateDisplay(currDisplay);
-    }
-    if (input === "0") {
-        return;
-    }
-
-
+function manageState(input) {
+    
 }
+
 
 function clearMemory() {
     currOperation.operandA = 0;
@@ -43,16 +34,16 @@ function clearMemory() {
 }
 
 function handleClick(e) {
-    console.log("I've been clicked", e);
+    console.log(e.target.dataset.label);
 
     // reference data attribute if it exists
-    if (e.target.dataset) {
+    if (e.target.dataset.operand) {
         // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
         // appears as DOMStringMap, 
         // and dashes from html are converted to camel case
         // e.g data-my-data -> myData
-        console.log(e.target.dataset);
-        manageNum(e.target.dataset.label);
+        // console.log(e.target.dataset);
+        manageState(e.target.dataset.operand);
     }
     if (e.target.dataset.label === "clear") {
         clearMemory();
