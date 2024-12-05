@@ -11,7 +11,7 @@ let state = {
     operandA: 0,
     operandB: null,
     operator: null,
-    userInputs: 0
+    operandSubmits: 0 // do I need to track how many submissions made?
 };
 
 // When buttons are pressed
@@ -24,19 +24,26 @@ function updateDisplay(char) {
 
 function manageState(input) {
     // check if we are on first or second input
-    if(state.operandA != 0) {}
-
-
     // if first input,
-    // check if first input is a zero
-    // if first input is a zero
-    // if first input is not a zero
+    if(state.operandSubmits === 0) {
+        // we are on first input
+        // check if first input is a zero
+        // if first input is a zero
+        if (operandA === 0) {
+
+        } else {
+            // if first input is not a zero
+
+        }
+        
+    }
 
     // if second input,
-    // 
+    if(state.operandSubmits === 1) {
+        // we are on second input
+    }
 
-
-
+    updateDisplay();
 
 }
 
