@@ -3,10 +3,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     // console.log("DOM fully loaded and parsed");
     setupEventListeners();
 
-    updateDisplay('0');
+    resetDisplay();
 });
 
 let currDisplay = '';
+let isFirstInput = true;
+
 
 let operandA = null;
 let operandB = null;
@@ -17,8 +19,21 @@ let operator = null;
 
 function updateDisplay(char) {
     const display = document.querySelector('#display');
-    currDisplay += char;
+    if (char === 0) {
+        currDisplay = '0';
+    } else if (isFirstInput && char === '0' ) {
+        currDisplay = char;
+    } else if (isFirstInput) {
+        currDisplay = char;
+        isFirstInput = false;
+    } else {
+        currDisplay += char;
+    }
     display.textContent = currDisplay;
+
+    // need to differentiate which stage of input
+    // refresh display after operator selection
+    // refresh display after pressing equals
 }
 
 // function manageState(input) {
@@ -46,7 +61,12 @@ function clearMemory() {
     operandA = null;
     operandB = null;
     operator = null;
-    updateDisplay('0');
+    isFirstInput = true;
+    resetDisplay(); 
+}
+
+function resetDisplay() {
+    updateDisplay(0); // helps to reset display
 }
 
 function manageOperator(input) {
@@ -56,9 +76,11 @@ function manageOperator(input) {
     const display = document.querySelector('#display');
     if (operandA === null) {
         operandA = parseInt(display.textContent);
+        resetDisplay();
+        return;
     }
 
-    updateDisplay('0');
+    // operandB is dealt with in handleClick()
 
 }
 
@@ -77,9 +99,11 @@ function handleClick(e) {
         // console.log(e.target.dataset);
         updateDisplay(btnLabel);
     }
+
     if (btnLabel === 'clear') {
         clearMemory();
     }
+
     if (btnLabel === '=') {
 
         const display = document.querySelector('#display');
