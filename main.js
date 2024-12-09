@@ -85,7 +85,7 @@ function handleClick(e) {
         updateDisplay(btnLabel);
     }
 
-    // Automatically starts next calculation inputs
+    // Once you have calculation result, start next calculation if operand is selected.
     if (btnType === 'operand' && isShowResult) {
         clearMemory();
         isShowResult = false;
