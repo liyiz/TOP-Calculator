@@ -20,7 +20,8 @@ let calcState = {
     operandB: null,
     operator: null,
     lastResult: null,
-    numOfCalcs: 0
+    numOfCalcs: 0, // Number of times user has completed a calculation
+    numOfInputs: 0 // Number of times user has clicked on any button
 }
 
 // keep state as strings
@@ -33,20 +34,43 @@ let displayState = {
 
 function updateDisplay(char) {
     const display = document.querySelector('#display');
-    if (char === 0) {
-        currDisplay = '0';
-    } else if (isFirstInput && char === '0' ) {
-        currDisplay = char;
-    } else if (isFirstInput) {
-        currDisplay = char;
-        isFirstInput = false;
-    } else if (isResult) {
-        currDisplay = char;
-        // isResult = false;
-    } else {
-        currDisplay += char;
+
+    // handle zero edge cases
+
+    // display what was passed in argument
+    display.textContent = char;
+
+    // update calcState
+    // decide which opperand var to assign
+    
+    // if this is first calculation
+    if (calcState.numOfCalcs === 0) {
+        
     }
-    display.textContent = currDisplay;
+    // if this is first input
+    if (calcState.numOfInputs === 0) {
+        display.textContent = char;
+    }
+    // if this is not the first calculation
+    if (calcState.numOfCalcs > 0) {
+
+    }
+
+
+
+    // if (char === 0) {
+    //     currDisplay = '0';
+    // } else if (isFirstInput && char === '0' ) {
+    //     currDisplay = char;
+    // } else if (isFirstInput) {
+    //     currDisplay = char;
+    //     isFirstInput = false;
+    // } else if (isResult) {
+    //     currDisplay = char;
+    //     // isResult = false;
+    // } else {
+    //     currDisplay += char;
+    // }
 
     // need to differentiate which stage of input
     // refresh display after operator selection
@@ -118,7 +142,9 @@ function handleClick(e) {
     // reference data attribute if it exists
     if (btnType === 'operand') {
         // update the displayState
+        displayState.content = btnLabel;
         // update the calcState
+        updateDisplay(displayState.content);
     }
 
     // if evaluate button pressed
@@ -126,23 +152,25 @@ function handleClick(e) {
         // Go on to evaluate the calculation
 
         // if operandA and operandB are empty
-        if (calcState.operandA === null && calcState.operandB === null) {
+        if (isNaN(calcState.operandA) && isNaN(calcState.operandB)) {
             // return, no effect - can't operate without operands
             return;
         }
 
         // if only operandA is filled
-        if (!isNaN(calcState.operandA)) {
+        if (isValidNumber(calcState.operandA)) {
             // 
         }
 
         // if only operandB is filled
-        if (!isNaN(calcState.operandB)) {
+        if (isValidNumber(calcState.operandB)) {
             // error out, that shouldn't happen
+            console.error("That shouldn't have happened");
+            return;
         }
         
         // if operandA and operandB are filled
-        if (!isNaN(calcState.operandA) && !isNaN(calcState.operandB)) {
+        if (isValidNumber(calcState.operandA) && isValidNumber(calcState.operandB)) {
             // continue to operate function
         }
 
@@ -153,21 +181,29 @@ function handleClick(e) {
         // go to function that will check which operator to select
 
         // if operandA and operandB are empty
-        if (calcState.operandA === null && calcState.operandB === null) {
+        if (isNaN(calcState.operandA) && isNaN(calcState.operandB)) {
             // return, no effect - can't operate without operands
             return;
         }
 
         // if only operandA is filled
-        // 
+        if (isValidNumber(calcState.operandA)) {
+            // 
+        }
 
         // if only operandB is filled
-        // error out, that shouldn't happen
-
+        if (isValidNumber(calcState.operandB)) {
+            // error out, that shouldn't happen
+            console.error("That shouldn't have happened");
+            return;
+        }
+        
         // if operandA and operandB are filled
-        // continue to operate function
+        if (isValidNumber(calcState.operandA) && isValidNumber(calcState.operandB)) {
+            // continue to operate function
+        }
 
-        manageOperator(btnLabel);
+        // manageOperator(btnLabel);
     }
 
     // If we have finished a calculation, and user clicks an operand button
@@ -177,6 +213,10 @@ function handleClick(e) {
         isResult = false;
         updateDisplay(btnLabel);
     }
+}
+
+function isValidNumber(input) {
+    return !isNaN(input);
 }
 
 function evaluate() {
