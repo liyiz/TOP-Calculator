@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 // state variables
 let currDisplay = '';
 let isFirstInput = true;
+let isAwaitOperand = true;
 let isShowResult = false;
 let isWaitingForOperandB = false;
 
@@ -19,27 +20,6 @@ let operator = null;
 let lastResult = null;
 
 
-function updateDisplay(char) {
-    const display = document.querySelector('#display');
-    if (char === 0) {
-        currDisplay = '0';
-    } else if (isFirstInput && char === '0' ) {
-        currDisplay = char;
-    } else if (isFirstInput) {
-        currDisplay = char;
-        // isFirstInput = false;
-    } else if (isShowResult) {
-        currDisplay = char;
-        // isShowResult = false;
-    } else {
-        currDisplay += char;
-    }
-    display.textContent = currDisplay;
-
-    // need to differentiate which stage of input
-    // refresh display after operator selection
-    // refresh display after pressing equals
-}
 
 function clearMemory() {
     operandA = null;
@@ -52,7 +32,7 @@ function clearMemory() {
 }
 
 function resetDisplay() {
-    updateDisplay(0); // helps to reset display
+    updateDisplay(); // helps to reset display
 }
 
 function manageOperator(input) {
@@ -71,6 +51,29 @@ function manageOperator(input) {
 
 }
 
+function updateDisplay(char = '0') {
+    const display = document.querySelector('#display');
+    
+    // Reset scenarios: first input, showing result, or zero as first character
+    if (isFirstInput && char === '0') {
+        currDisplay = char;
+    }
+    else if (isFirstInput) {
+        currDisplay = char;
+        isFirstInput = false;
+    } 
+    else if (isShowResult) {
+        currDisplay = char;
+        isShowResult = false;
+    }
+    else {
+        // Append character for subsequent inputs
+        currDisplay += char;
+    }
+    
+    display.textContent = currDisplay;
+}
+
 function handleClick(e) {
     // console.log(e.target.dataset.type);
 
@@ -87,7 +90,8 @@ function handleClick(e) {
 
     if (btnLabel === '=') {
         inputValidation();
-
+        operandB = parseInt(display.textContent)
+        isWaitingForOperandB = false;
         // check that arguments exist as variables before calling function
         if (operator && operandA && operandB) {
             const result = operate(operator, operandA, operandB);
@@ -104,21 +108,24 @@ function handleClick(e) {
 
     // operandA -> operator -> operandB -> operator ->
 
-    if (btnType === 'digit' && isFirstInput) {
+    if (btnType === 'digit') {
         updateDisplay(btnLabel);
-        operandA = parseInt(display.textContent);
-        isFirstInput = false; // bool change after updateDisplay as logic in there requires it
     }
+    // if (btnType === 'digit' && !isFirstInput) {
+    //     updateDisplay(btnLabel);
+    // }
 
-    if (btnType === 'digit' && isWaitingForOperandB) {
-        updateDisplay(btnLabel);
-        operandB = parseInt(display.textContent);
-        isWaitingForOperandB = false;
-    }
+    // if (btnType === 'digit' && isWaitingForOperandB) {
+    //     updateDisplay(btnLabel);
+    // }
 
 
     // What happens when picking an operator on a first calculation
     if (btnType === 'operator' && !isShowResult) {
+
+        operandA = parseInt(display.textContent)
+        isFirstInput = true;
+
         manageOperator(btnLabel);
         // reset display to take new input number
         resetDisplay();
@@ -139,9 +146,6 @@ function handleClick(e) {
         updateDisplay(btnLabel);
     }
 
-
-
-    
     // if user wants to operate on a result
     if (btnType === 'operator' && isShowResult) {
         // reset both operand variables
@@ -151,13 +155,15 @@ function handleClick(e) {
         manageOperator(btnLabel);
     }
 
+    console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isWaitingForOperandB, isShowResult})
+
+
 }
 
 
 function inputValidation() {
     // function to validate calculator state before proceeding to operate()
-    console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isWaitingForOperandB, isShowResult})
-}
+    }
 
 
 function operate(operation, a, b) {
