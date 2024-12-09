@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     resetDisplay();
 });
 
+
+// state variables
 let currDisplay = '';
 let isFirstInput = true;
 let isShowResult = false;
@@ -54,7 +56,7 @@ function resetDisplay() {
 
 function manageOperator(input) {
     console.log("Received operator:", input);
-    calcState.operator = input;
+    operator = input;
 
     // const display = document.querySelector('#display');
     // if (operandA === null && operandB === null) {
@@ -82,18 +84,8 @@ function handleClick(e) {
 
     // reference data attribute if it exists
     if (btnType === 'digit') {
-        updateDisplay(btnLabel);
-    }
 
-    // Once you have calculation result, start next calculation if operand is selected.
-    if (btnType === 'digit' && isShowResult) {
-        clearMemory();
-        isShowResult = false;
         updateDisplay(btnLabel);
-    }
-
-    if (btnLabel === 'clear') {
-        clearMemory();
     }
 
     if (btnLabel === '=') {
@@ -115,8 +107,20 @@ function handleClick(e) {
         }
     }
 
+    // What happens when picking an operator on a first calculation
+    if (btnType === 'operator' && !isShowResult) {
+        manageOperator(btnLabel);
+    }
+
+    // Once you have calculation result, start next calculation if operand is selected.
+    if (btnType === 'digit' && isShowResult) {
+        clearMemory();
+        isShowResult = false;
+        updateDisplay(btnLabel);
+    }
 
     // operandA -> operator -> operandB -> result -> operator
+
     // operandA -> operator -> operandB -> operator ->
 
     
@@ -128,9 +132,7 @@ function handleClick(e) {
         // managerOperator will assign operandA with result
         manageOperator(btnLabel);
     }
-    if (btnType === 'operator' && !isShowResult) {
-        manageOperator(btnLabel);
-    }
+
 }
 
 
