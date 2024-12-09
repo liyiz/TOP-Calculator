@@ -28,7 +28,7 @@ function updateDisplay(char) {
         isFirstInput = false;
     } else if (isResult) {
         currDisplay = char;
-        isResult = false;
+        // isResult = false;
     } else {
         currDisplay += char;
     }
@@ -101,6 +101,16 @@ function handleClick(e) {
         // and dashes from html are converted to camel case
         // e.g data-my-data -> myData
         // console.log(e.target.dataset);
+
+
+
+        updateDisplay(btnLabel);
+    }
+
+    // Automatically starts next calculation inputs
+    if (btnType === 'operand' && isResult) {
+        clearMemory();
+        isResult = false;
         updateDisplay(btnLabel);
     }
 
