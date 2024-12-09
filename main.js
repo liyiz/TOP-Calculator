@@ -77,7 +77,7 @@ function manageOperator(input) {
     operator = input;
 
     const display = document.querySelector('#display');
-    if (operandA === null) {
+    if (operandA === null && operandB === null) {
         operandA = parseInt(display.textContent);
         isFirstInput = true;
         resetDisplay();
@@ -121,7 +121,7 @@ function handleClick(e) {
     if (btnLabel === '=') {
 
         const display = document.querySelector('#display');
-        if (operandB === null) {
+        if (operandA != null && operandB === null) {
             operandB = parseInt(display.textContent);
         }
 
@@ -131,7 +131,8 @@ function handleClick(e) {
             isResult = true;
             updateDisplay(result);
         } else {
-            console.log("Cannot perform operation: Operands and/or operator missing.")
+            console.log("Cannot perform operation: Operands and/or operator missing.");
+            return;
         }
     }
     if (btnType === 'operator') {
