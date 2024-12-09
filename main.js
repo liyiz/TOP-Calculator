@@ -38,17 +38,6 @@ function resetDisplay() {
 function manageOperator(input) {
     console.log("Received operator:", input);
     operator = input;
-
-    // const display = document.querySelector('#display');
-    // if (operandA === null && operandB === null) {
-    //     operandA = parseInt(display.textContent);
-    //     isFirstInput = true; // So "first" input for operandB will replace '0' - otherwise it concats
-    //     resetDisplay();
-    //     return;
-    // }
-
-    // operandB is dealt with in handleClick()
-
 }
 
 function updateDisplay(char = '0') {
@@ -64,7 +53,7 @@ function updateDisplay(char = '0') {
     } 
     else if (isShowResult) {
         currDisplay = char;
-        isShowResult = false;
+        // isShowResult = false;
     }
     else {
         // Append character for subsequent inputs
@@ -111,14 +100,6 @@ function handleClick(e) {
     if (btnType === 'digit') {
         updateDisplay(btnLabel);
     }
-    // if (btnType === 'digit' && !isFirstInput) {
-    //     updateDisplay(btnLabel);
-    // }
-
-    // if (btnType === 'digit' && isWaitingForOperandB) {
-    //     updateDisplay(btnLabel);
-    // }
-
 
     // What happens when picking an operator on a first calculation
     if (btnType === 'operator' && !isShowResult) {
@@ -135,6 +116,11 @@ function handleClick(e) {
     // What happens when picking an operator on a result - user intends to chain calculation
     if (btnType === 'operator' && isShowResult) {
         manageOperator(btnLabel);
+        operandA = lastResult; // -> then go to set operandB
+        operandB = null;
+        isWaitingForOperandB = true;
+        isFirstInput = true;
+        isShowResult = false; 
         // reset display to take new input number
         resetDisplay();
     }
@@ -144,15 +130,6 @@ function handleClick(e) {
         clearMemory();
         isShowResult = false;
         updateDisplay(btnLabel);
-    }
-
-    // if user wants to operate on a result
-    if (btnType === 'operator' && isShowResult) {
-        // reset both operand variables
-        operandA = null;
-        operandB = null;
-        // managerOperator will assign operandA with result
-        manageOperator(btnLabel);
     }
 
     console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isWaitingForOperandB, isShowResult})
