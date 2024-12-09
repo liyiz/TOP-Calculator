@@ -79,16 +79,14 @@ function handleClick(e) {
     // data group or type to check
     const btnType = e.target.dataset.type;
 
+    const display = document.querySelector('#display');
+
     if (btnLabel === 'clear') {
         clearMemory();
     }
 
     if (btnLabel === '=') {
         inputValidation();
-        const display = document.querySelector('#display');
-        if (operandA != null && operandB === null) {
-            operandB = parseInt(display.textContent);
-        }
 
         // check that arguments exist as variables before calling function
         if (operator && operandA && operandB) {
@@ -107,15 +105,17 @@ function handleClick(e) {
     // operandA -> operator -> operandB -> operator ->
 
     if (btnType === 'digit' && isFirstInput) {
-        operandA = parseInt(btnLabel);
         updateDisplay(btnLabel);
+        operandA = parseInt(display.textContent);
         isFirstInput = false; // bool change after updateDisplay as logic in there requires it
     }
 
     if (btnType === 'digit' && isWaitingForOperandB) {
-        operandB = parseInt(btnLabel);
         updateDisplay(btnLabel);
+        operandB = parseInt(display.textContent);
+        isWaitingForOperandB = false;
     }
+
 
     // What happens when picking an operator on a first calculation
     if (btnType === 'operator' && !isShowResult) {
@@ -123,6 +123,13 @@ function handleClick(e) {
         // reset display to take new input number
         resetDisplay();
         isWaitingForOperandB = true;
+    }
+
+    // What happens when picking an operator on a result - user intends to chain calculation
+    if (btnType === 'operator' && isShowResult) {
+        manageOperator(btnLabel);
+        // reset display to take new input number
+        resetDisplay();
     }
 
     // Once you have calculation result, start next calculation if operand is selected.
