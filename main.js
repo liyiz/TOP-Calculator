@@ -27,7 +27,6 @@ function updateDisplay(char) {
         currDisplay = char;
     } else if (isFirstInput) {
         currDisplay = char;
-        isFirstInput = false;
     } else if (isShowResult) {
         currDisplay = char;
         // isShowResult = false;
@@ -83,12 +82,6 @@ function handleClick(e) {
         clearMemory();
     }
 
-    // reference data attribute if it exists
-    if (btnType === 'digit') {
-
-        updateDisplay(btnLabel);
-    }
-
     if (btnLabel === '=') {
         inputValidation();
         const display = document.querySelector('#display');
@@ -108,6 +101,21 @@ function handleClick(e) {
         }
     }
 
+    // operandA -> operator -> operandB -> result -> operator
+
+    // operandA -> operator -> operandB -> operator ->
+
+    if (btnType === 'digit' && isFirstInput) {
+        operandA = parseInt(btnLabel);
+        isFirstInput = false;
+        updateDisplay(btnLabel);
+    }
+
+    if (btnType === 'digit' && isWaitingForOperandB) {
+        operandB = parseInt(btnLabel);
+        updateDisplay(btnLabel);
+    }
+
     // What happens when picking an operator on a first calculation
     if (btnType === 'operator' && !isShowResult) {
         manageOperator(btnLabel);
@@ -123,9 +131,7 @@ function handleClick(e) {
         updateDisplay(btnLabel);
     }
 
-    // operandA -> operator -> operandB -> result -> operator
 
-    // operandA -> operator -> operandB -> operator ->
 
     
     // if user wants to operate on a result
