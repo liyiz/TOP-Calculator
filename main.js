@@ -13,7 +13,7 @@ let isResult = false;
 let operandA = null;
 let operandB = null;
 let operator = null;
-
+let lastResult = null;
 
 // When buttons are pressed
 
@@ -119,29 +119,37 @@ function handleClick(e) {
     }
 
     if (btnLabel === '=') {
-
-        const display = document.querySelector('#display');
-        if (operandA != null && operandB === null) {
-            operandB = parseInt(display.textContent);
-        }
-
-        // check that arguments exist as variables before calling function
-        if (operator && operandA && operandB) {
-            const result = operate(operator, operandA, operandB);
-            isResult = true;
-            updateDisplay(result);
-        } else {
-            console.log("Cannot perform operation: Operands and/or operator missing.");
-            return;
-        }
+        evaluate();
     }
-    if (btnType === 'operator' && isResult) {
-        // if user wants to operate on a result
-        // assign operandA as result
-        manageOperator(btnLabel);
-    }
+
     if (btnType === 'operator' && !isResult) {
         manageOperator(btnLabel);
+    }
+}
+
+function evaluate() {
+    const display = document.querySelector('#display');
+
+    // Checks if we're chaining an operation
+    if (operandA != null && operandB != null) {
+        clearMemory();
+        operandA = lastResult;
+    }
+    
+    // Checks if operandA is filled in but not operandB
+    if (operandA != null && operandB === null) {
+        operandB = parseInt(display.textContent);
+    }
+
+    // check that arguments exist as variables before calling function
+    if (operator && operandA && operandB) {
+        const result = operate(operator, operandA, operandB);
+        isResult = true;
+        updateDisplay(result);
+        lastResult = result;
+    } else {
+        console.log("Cannot perform operation: Operands and/or operator missing.");
+        return;
     }
 }
 
