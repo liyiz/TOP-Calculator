@@ -16,8 +16,6 @@ let operator = null;
 let lastResult = null;
 
 
-// When buttons are pressed
-
 function updateDisplay(char) {
     const display = document.querySelector('#display');
     if (char === 0) {
@@ -38,19 +36,6 @@ function updateDisplay(char) {
     // need to differentiate which stage of input
     // refresh display after operator selection
     // refresh display after pressing equals
-}
-
-function manageNum(num) {
-    console.log(num);
-    if(operandA == 0) {
-        operandA = 0;
-    } else {
-        operandA = parseInt(num);
-    }
-
-    updateDisplay(operandA);
-
-    console.table([operandA, operandB, operator]);
 }
 
 function clearMemory() {
@@ -91,14 +76,6 @@ function handleClick(e) {
 
     // reference data attribute if it exists
     if (btnType === 'operand') {
-        // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
-        // appears as DOMStringMap, 
-        // and dashes from html are converted to camel case
-        // e.g data-my-data -> myData
-        // console.log(e.target.dataset);
-
-
-
         updateDisplay(btnLabel);
     }
 
@@ -114,7 +91,7 @@ function handleClick(e) {
     }
 
     if (btnLabel === '=') {
-
+        inputValidation();
         const display = document.querySelector('#display');
         if (operandA != null && operandB === null) {
             operandB = parseInt(display.textContent);
@@ -124,21 +101,38 @@ function handleClick(e) {
         if (operator && operandA && operandB) {
             const result = operate(operator, operandA, operandB);
             isShowResult = true;
+            lastResult = result;
             updateDisplay(result);
         } else {
             console.log("Cannot perform operation: Operands and/or operator missing.");
             return;
         }
     }
+
+
+    // operandA -> operator -> operandB -> result -> operator
+    // operandA -> operator -> operandB -> operator ->
+
+    
+    // if user wants to operate on a result
     if (btnType === 'operator' && isShowResult) {
-        // if user wants to operate on a result
-        // assign operandA as result
+        // reset both operand variables
+        operandA = null;
+        operandB = null;
+        // managerOperator will assign operandA with result
         manageOperator(btnLabel);
     }
     if (btnType === 'operator' && !isShowResult) {
         manageOperator(btnLabel);
     }
 }
+
+
+function inputValidation() {
+    // function to validate calculator state before proceeding to operate()
+    console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isShowResult})
+}
+
 
 function operate(operation, a, b) {
     let output = 0;
