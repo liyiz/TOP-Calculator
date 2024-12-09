@@ -27,6 +27,7 @@ function updateDisplay(char) {
         currDisplay = char;
     } else if (isFirstInput) {
         currDisplay = char;
+        // isFirstInput = false;
     } else if (isShowResult) {
         currDisplay = char;
         // isShowResult = false;
@@ -107,8 +108,8 @@ function handleClick(e) {
 
     if (btnType === 'digit' && isFirstInput) {
         operandA = parseInt(btnLabel);
-        isFirstInput = false;
         updateDisplay(btnLabel);
+        isFirstInput = false; // bool change after updateDisplay as logic in there requires it
     }
 
     if (btnType === 'digit' && isWaitingForOperandB) {
