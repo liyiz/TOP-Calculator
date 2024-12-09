@@ -15,7 +15,7 @@ let operandB = null;
 let operator = null;
 let lastResult = null;
 
-let clacState = {
+let calcState = {
     operandA: null,
     operandB: null,
     operator: null,
@@ -75,10 +75,11 @@ function manageNum(num) {
 }
 
 function clearMemory() {
-    operandA = null;
-    operandB = null;
-    operator = null;
-    isFirstInput = true;
+    calcState.operandA = null;
+    calcState.operandB = null;
+    calcState.operator = null;
+    calcState.lastResult = null;
+    calcState.numOfCalcs = 0;
     resetDisplay(); 
 }
 
@@ -88,68 +89,93 @@ function resetDisplay() {
 
 function manageOperator(input) {
     console.log("Received operator:", input);
-    operator = input;
+    calcState.operator = input;
 
-    const display = document.querySelector('#display');
-    if (operandA === null && operandB === null) {
-        operandA = parseInt(display.textContent);
-        isFirstInput = true; // So "first" input for operandB will replace '0' - otherwise it concats
-        resetDisplay();
-        return;
-    }
+    // const display = document.querySelector('#display');
+    // if (operandA === null && operandB === null) {
+    //     operandA = parseInt(display.textContent);
+    //     isFirstInput = true; // So "first" input for operandB will replace '0' - otherwise it concats
+    //     resetDisplay();
+    //     return;
+    // }
 
     // operandB is dealt with in handleClick()
 
 }
 
 function handleClick(e) {
-    console.log(e.target.dataset.type);
+    // console.log(e.target.dataset.type);
 
+    // data to assess and pass to functions
     const btnLabel = e.target.dataset.label;
+    // data group or type to check
     const btnType = e.target.dataset.type;
-
-    // reference data attribute if it exists
-    if (btnType === 'operand') {
-        // https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes
-        // appears as DOMStringMap, 
-        // and dashes from html are converted to camel case
-        // e.g data-my-data -> myData
-        // console.log(e.target.dataset);
-
-        updateDisplay(btnLabel);
-    }
-
-    // Automatically starts next calculation inputs
-    if (btnType === 'operand' && isResult) {
-        clearMemory();
-        isResult = false;
-        updateDisplay(btnLabel);
-    }
 
     if (btnLabel === 'clear') {
         clearMemory();
     }
 
-    if (btnLabel === '=') {
-
-        const display = document.querySelector('#display');
-
-        // Checks if we're chaining an operation
-        if (operandA != null && operandB != null) {
-            clearMemory();
-            operandA = evaluate();
-        }
-        
-        // Checks if operandA is filled in but not operandB
-        if (operandA != null && operandB === null) {
-            operandB = parseInt(display.textContent);
-        }
-
-        evaluate();
+    // reference data attribute if it exists
+    if (btnType === 'operand') {
+        // update the displayState
+        // update the calcState
     }
 
-    if (btnType === 'operator' && !isResult) {
+    // if evaluate button pressed
+    if (btnLabel === '=') {
+        // Go on to evaluate the calculation
+
+        // if operandA and operandB are empty
+        if (calcState.operandA === null && calcState.operandB === null) {
+            // return, no effect - can't operate without operands
+            return;
+        }
+
+        // if only operandA is filled
+        if (!isNaN(calcState.operandA)) {
+            // 
+        }
+
+        // if only operandB is filled
+        if (!isNaN(calcState.operandB)) {
+            // error out, that shouldn't happen
+        }
+        
+        // if operandA and operandB are filled
+        if (!isNaN(calcState.operandA) && !isNaN(calcState.operandB)) {
+            // continue to operate function
+        }
+
+    }
+
+    // If operator button pressed
+    if (btnType === 'operator') {
+        // go to function that will check which operator to select
+
+        // if operandA and operandB are empty
+        if (calcState.operandA === null && calcState.operandB === null) {
+            // return, no effect - can't operate without operands
+            return;
+        }
+
+        // if only operandA is filled
+        // 
+
+        // if only operandB is filled
+        // error out, that shouldn't happen
+
+        // if operandA and operandB are filled
+        // continue to operate function
+
         manageOperator(btnLabel);
+    }
+
+    // If we have finished a calculation, and user clicks an operand button
+    if (btnType === 'operand' && isResult) {
+        // Start a new calculation, clear memory and clear display
+        clearMemory();
+        isResult = false;
+        updateDisplay(btnLabel);
     }
 }
 
