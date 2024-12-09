@@ -81,12 +81,12 @@ function handleClick(e) {
     }
 
     // reference data attribute if it exists
-    if (btnType === 'operand') {
+    if (btnType === 'digit') {
         updateDisplay(btnLabel);
     }
 
     // Once you have calculation result, start next calculation if operand is selected.
-    if (btnType === 'operand' && isShowResult) {
+    if (btnType === 'digit' && isShowResult) {
         clearMemory();
         isShowResult = false;
         updateDisplay(btnLabel);
