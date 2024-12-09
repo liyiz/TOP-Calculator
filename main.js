@@ -8,102 +8,43 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 let currDisplay = '';
 let isFirstInput = true;
-let isResult = false;
+let isShowResult = false;
 
 let operandA = null;
 let operandB = null;
 let operator = null;
 let lastResult = null;
 
-let calcState = {
-    operandA: null,
-    operandB: null,
-    operator: null,
-    lastResult: null,
-    numOfCalcs: 0, // Number of times user has completed a calculation
-    numOfInputs: 0 // Number of times user has clicked on any button
-}
-
-// keep state as strings
-let displayState = {
-    content: ''
-}
-
-
-// When buttons are pressed
 
 function updateDisplay(char) {
     const display = document.querySelector('#display');
-
-    // handle zero edge cases
-
-    // display what was passed in argument
-    display.textContent = char;
-
-    // update calcState
-    // decide which opperand var to assign
-    
-    // if this is first calculation
-    if (calcState.numOfCalcs === 0) {
-        
+    if (char === 0) {
+        currDisplay = '0';
+    } else if (isFirstInput && char === '0' ) {
+        currDisplay = char;
+    } else if (isFirstInput) {
+        currDisplay = char;
+        isFirstInput = false;
+    } else if (isShowResult) {
+        currDisplay = char;
+        // isShowResult = false;
+    } else {
+        currDisplay += char;
     }
-    // if this is first input
-    if (calcState.numOfInputs === 0) {
-        display.textContent = char;
-    }
-    // if this is not the first calculation
-    if (calcState.numOfCalcs > 0) {
-
-    }
-
-
-
-    // if (char === 0) {
-    //     currDisplay = '0';
-    // } else if (isFirstInput && char === '0' ) {
-    //     currDisplay = char;
-    // } else if (isFirstInput) {
-    //     currDisplay = char;
-    //     isFirstInput = false;
-    // } else if (isResult) {
-    //     currDisplay = char;
-    //     // isResult = false;
-    // } else {
-    //     currDisplay += char;
-    // }
+    display.textContent = currDisplay;
 
     // need to differentiate which stage of input
     // refresh display after operator selection
     // refresh display after pressing equals
 }
 
-// function manageState(input) {
-//     // Do calculator logic here
-
-//     updateDisplay();
-
-// }
-
-
-function manageNum(num) {
-    console.log(num);
-    if(operandA == 0) {
-        operandA = 0;
-    } else {
-        operandA = parseInt(num);
-    }
-
-    updateDisplay(operandA);
-
-    console.table([operandA, operandB, operator]);
-}
-
 function clearMemory() {
-    calcState.operandA = null;
-    calcState.operandB = null;
-    calcState.operator = null;
-    calcState.lastResult = null;
-    calcState.numOfCalcs = 0;
+    operandA = null;
+    operandB = null;
+    operator = null;
+    lastResult = null;
+    isShowResult = false;
+    isFirstInput = true;
     resetDisplay(); 
 }
 
@@ -141,98 +82,63 @@ function handleClick(e) {
 
     // reference data attribute if it exists
     if (btnType === 'operand') {
-        // update the displayState
-        displayState.content = btnLabel;
-        // update the calcState
-        updateDisplay(displayState.content);
-    }
-
-    // if evaluate button pressed
-    if (btnLabel === '=') {
-        // Go on to evaluate the calculation
-
-        // if operandA and operandB are empty
-        if (isNaN(calcState.operandA) && isNaN(calcState.operandB)) {
-            // return, no effect - can't operate without operands
-            return;
-        }
-
-        // if only operandA is filled
-        if (isValidNumber(calcState.operandA)) {
-            // 
-        }
-
-        // if only operandB is filled
-        if (isValidNumber(calcState.operandB)) {
-            // error out, that shouldn't happen
-            console.error("That shouldn't have happened");
-            return;
-        }
-        
-        // if operandA and operandB are filled
-        if (isValidNumber(calcState.operandA) && isValidNumber(calcState.operandB)) {
-            // continue to operate function
-        }
-
-    }
-
-    // If operator button pressed
-    if (btnType === 'operator') {
-        // go to function that will check which operator to select
-
-        // if operandA and operandB are empty
-        if (isNaN(calcState.operandA) && isNaN(calcState.operandB)) {
-            // return, no effect - can't operate without operands
-            return;
-        }
-
-        // if only operandA is filled
-        if (isValidNumber(calcState.operandA)) {
-            // 
-        }
-
-        // if only operandB is filled
-        if (isValidNumber(calcState.operandB)) {
-            // error out, that shouldn't happen
-            console.error("That shouldn't have happened");
-            return;
-        }
-        
-        // if operandA and operandB are filled
-        if (isValidNumber(calcState.operandA) && isValidNumber(calcState.operandB)) {
-            // continue to operate function
-        }
-
-        // manageOperator(btnLabel);
-    }
-
-    // If we have finished a calculation, and user clicks an operand button
-    if (btnType === 'operand' && isResult) {
-        // Start a new calculation, clear memory and clear display
-        clearMemory();
-        isResult = false;
         updateDisplay(btnLabel);
     }
-}
 
-function isValidNumber(input) {
-    return !isNaN(input);
-}
+    // Automatically starts next calculation inputs
+    if (btnType === 'operand' && isShowResult) {
+        clearMemory();
+        isShowResult = false;
+        updateDisplay(btnLabel);
+    }
 
-function evaluate() {
+    if (btnLabel === 'clear') {
+        clearMemory();
+    }
 
-    // check that arguments exist as variables before calling function
-    if (operator && operandA && operandB) {
-        const result = operate(operator, operandA, operandB);
-        isResult = true;
-        updateDisplay(result);
-        lastResult = result;
-        return result;
-    } else {
-        console.log("Cannot perform operation: Operands and/or operator missing.");
-        return 0;
+    if (btnLabel === '=') {
+        inputValidation();
+        const display = document.querySelector('#display');
+        if (operandA != null && operandB === null) {
+            operandB = parseInt(display.textContent);
+        }
+
+        // check that arguments exist as variables before calling function
+        if (operator && operandA && operandB) {
+            const result = operate(operator, operandA, operandB);
+            isShowResult = true;
+            lastResult = result;
+            updateDisplay(result);
+        } else {
+            console.log("Cannot perform operation: Operands and/or operator missing.");
+            return;
+        }
+    }
+
+
+    // operandA -> operator -> operandB -> result -> operator
+    // operandA -> operator -> operandB -> operator ->
+
+    
+    // if user wants to operate on a result
+    if (btnType === 'operator' && isShowResult) {
+        // reset both operand variables
+        operandA = null;
+        operandB = null;
+        // managerOperator will assign operandA with result
+        manageOperator(btnLabel);
+    }
+    if (btnType === 'operator' && !isShowResult) {
+        manageOperator(btnLabel);
     }
 }
+
+
+function inputValidation() {
+    // function to validate calculator state before proceeding to operate()
+    console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isShowResult})
+}
+
 
 function operate(operation, a, b) {
     let output = 0;
