@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 let currDisplay = '';
 let isFirstInput = true;
 let isShowResult = false;
+let isWaitingForOperandB = false;
 
 let operandA = null;
 let operandB = null;
@@ -110,6 +111,9 @@ function handleClick(e) {
     // What happens when picking an operator on a first calculation
     if (btnType === 'operator' && !isShowResult) {
         manageOperator(btnLabel);
+        // reset display to take new input number
+        resetDisplay();
+        isWaitingForOperandB = true;
     }
 
     // Once you have calculation result, start next calculation if operand is selected.
@@ -138,7 +142,7 @@ function handleClick(e) {
 
 function inputValidation() {
     // function to validate calculator state before proceeding to operate()
-    console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isShowResult})
+    console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isWaitingForOperandB, isShowResult})
 }
 
 
