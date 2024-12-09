@@ -79,7 +79,7 @@ function manageOperator(input) {
     const display = document.querySelector('#display');
     if (operandA === null && operandB === null) {
         operandA = parseInt(display.textContent);
-        isFirstInput = false;
+        isFirstInput = true; // So "first" input for operandB will replace '0' - otherwise it concats
         resetDisplay();
         return;
     }
@@ -135,7 +135,12 @@ function handleClick(e) {
             return;
         }
     }
-    if (btnType === 'operator') {
+    if (btnType === 'operator' && isResult) {
+        // if user wants to operate on a result
+        // assign operandA as result
+        manageOperator(btnLabel);
+    }
+    if (btnType === 'operator' && !isResult) {
         manageOperator(btnLabel);
     }
 }
