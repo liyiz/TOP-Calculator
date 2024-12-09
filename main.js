@@ -8,11 +8,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 let currDisplay = '';
 let isFirstInput = true;
-let isResult = false;
+let isShowResult = false;
 
 let operandA = null;
 let operandB = null;
 let operator = null;
+let lastResult = null;
 
 
 // When buttons are pressed
@@ -26,9 +27,9 @@ function updateDisplay(char) {
     } else if (isFirstInput) {
         currDisplay = char;
         isFirstInput = false;
-    } else if (isResult) {
+    } else if (isShowResult) {
         currDisplay = char;
-        // isResult = false;
+        // isShowResult = false;
     } else {
         currDisplay += char;
     }
@@ -38,14 +39,6 @@ function updateDisplay(char) {
     // refresh display after operator selection
     // refresh display after pressing equals
 }
-
-// function manageState(input) {
-//     // Do calculator logic here
-
-//     updateDisplay();
-
-// }
-
 
 function manageNum(num) {
     console.log(num);
@@ -64,6 +57,8 @@ function clearMemory() {
     operandA = null;
     operandB = null;
     operator = null;
+    lastResult = null;
+    isShowResult = false;
     isFirstInput = true;
     resetDisplay(); 
 }
@@ -108,9 +103,9 @@ function handleClick(e) {
     }
 
     // Automatically starts next calculation inputs
-    if (btnType === 'operand' && isResult) {
+    if (btnType === 'operand' && isShowResult) {
         clearMemory();
-        isResult = false;
+        isShowResult = false;
         updateDisplay(btnLabel);
     }
 
@@ -128,19 +123,19 @@ function handleClick(e) {
         // check that arguments exist as variables before calling function
         if (operator && operandA && operandB) {
             const result = operate(operator, operandA, operandB);
-            isResult = true;
+            isShowResult = true;
             updateDisplay(result);
         } else {
             console.log("Cannot perform operation: Operands and/or operator missing.");
             return;
         }
     }
-    if (btnType === 'operator' && isResult) {
+    if (btnType === 'operator' && isShowResult) {
         // if user wants to operate on a result
         // assign operandA as result
         manageOperator(btnLabel);
     }
-    if (btnType === 'operator' && !isResult) {
+    if (btnType === 'operator' && !isShowResult) {
         manageOperator(btnLabel);
     }
 }
