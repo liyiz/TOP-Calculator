@@ -15,6 +15,20 @@ let operandB = null;
 let operator = null;
 let lastResult = null;
 
+let clacState = {
+    operandA: null,
+    operandB: null,
+    operator: null,
+    lastResult: null,
+    numOfCalcs: 0
+}
+
+// keep state as strings
+let displayState = {
+    content: ''
+}
+
+
 // When buttons are pressed
 
 function updateDisplay(char) {
@@ -102,8 +116,6 @@ function handleClick(e) {
         // e.g data-my-data -> myData
         // console.log(e.target.dataset);
 
-
-
         updateDisplay(btnLabel);
     }
 
@@ -119,6 +131,20 @@ function handleClick(e) {
     }
 
     if (btnLabel === '=') {
+
+        const display = document.querySelector('#display');
+
+        // Checks if we're chaining an operation
+        if (operandA != null && operandB != null) {
+            clearMemory();
+            operandA = evaluate();
+        }
+        
+        // Checks if operandA is filled in but not operandB
+        if (operandA != null && operandB === null) {
+            operandB = parseInt(display.textContent);
+        }
+
         evaluate();
     }
 
@@ -128,18 +154,6 @@ function handleClick(e) {
 }
 
 function evaluate() {
-    const display = document.querySelector('#display');
-
-    // Checks if we're chaining an operation
-    if (operandA != null && operandB != null) {
-        clearMemory();
-        operandA = lastResult;
-    }
-    
-    // Checks if operandA is filled in but not operandB
-    if (operandA != null && operandB === null) {
-        operandB = parseInt(display.textContent);
-    }
 
     // check that arguments exist as variables before calling function
     if (operator && operandA && operandB) {
@@ -147,9 +161,10 @@ function evaluate() {
         isResult = true;
         updateDisplay(result);
         lastResult = result;
+        return result;
     } else {
         console.log("Cannot perform operation: Operands and/or operator missing.");
-        return;
+        return 0;
     }
 }
 
