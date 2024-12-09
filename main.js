@@ -79,7 +79,7 @@ function manageOperator(input) {
     const display = document.querySelector('#display');
     if (operandA === null && operandB === null) {
         operandA = parseInt(display.textContent);
-        isFirstInput = true;
+        isFirstInput = false;
         resetDisplay();
         return;
     }
