@@ -64,6 +64,9 @@ function updateDisplay(char = '0') {
 }
 
 function handleClick(e) {
+
+    // TODO: See about refactoring and breaking up this function into smaller ones
+
     // console.log(e.target.dataset.type);
 
     // data to assess and pass to functions
@@ -78,7 +81,7 @@ function handleClick(e) {
     }
 
     if (btnLabel === '=') {
-        inputValidation();
+        inputValidation(); // TODO: Requirements for input validation phase of a calculation?
         operandB = parseInt(display.textContent)
         isWaitingForOperandB = false;
         // check that arguments exist as variables before calling function
@@ -114,6 +117,7 @@ function handleClick(e) {
     }
 
     // What happens when picking an operator on a result - user intends to chain calculation
+    // TODO: Make sure to show the result, not just another zero
     if (btnType === 'operator' && isShowResult) {
         manageOperator(btnLabel);
         operandA = lastResult; // -> then go to set operandB
@@ -140,7 +144,7 @@ function handleClick(e) {
 
 function inputValidation() {
     // function to validate calculator state before proceeding to operate()
-    }
+}
 
 
 function operate(operation, a, b) {
