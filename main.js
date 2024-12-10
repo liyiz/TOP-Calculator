@@ -42,29 +42,32 @@ function manageOperator(input) {
 }
 
 function updateDisplay(char = '0') {
-    const display = document.querySelector('#display');
     
-    // Reset scenarios: first input, showing result, or zero as first character
-    if (isFirstInput && char === '0') {
-        currDisplay = '0';
+    let newValue = '';
+
+    // display zero to start with
+
+    // if user inputs zero first, display a 0 - but do not concat
+    if (/*user inputs a zero*/char === '0') {
+        // display a zero
+        newValue = '0';
+        display.textContent = newValue;
     }
-    else if (isFirstInput) {
-        currDisplay = char;
-        isFirstInput = false;
-    } 
-    else if (isWaitingForOperandB) {
-        currDisplay = char;
+
+    if (/*user inputs any other number AND it is the first input*/char != '0' && isFirstInput) {
+        // display the input number
+        newValue = char;
+        display.textContent = newValue;
     }
-    else if (isShowResult) {
-        currDisplay = char;
-        // isShowResult = false;
+
+    if (/*user inputs a notFirst number*/ !isFirstInput) {
+        // concatenate the notFirst number to the end of the string
+        newValue += char;
+        display.textContent = newValue;
     }
-    else {
-        // Append character for subsequent inputs
-        currDisplay += char;
-    }
+
+    currDisplay = display.textContent;
     
-    display.textContent = currDisplay;
 }
 
 function handleClick(e) {
