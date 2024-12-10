@@ -43,30 +43,35 @@ function manageOperator(input) {
 
 function updateDisplay(char = '0') {
     
-    let newValue = '';
 
     // display zero to start with
 
     // if user inputs zero first, display a 0 - but do not concat
-    if (/*user inputs a zero*/char === '0') {
+    if (/*user inputs a zero*/char === '0' && isFirstInput) {
         // display a zero
-        newValue = '0';
-        display.textContent = newValue;
+        display.textContent = '0';
+        currDisplay = display.textContent;
+        return;
     }
 
     if (/*user inputs any other number AND it is the first input*/char != '0' && isFirstInput) {
         // display the input number
-        newValue = char;
-        display.textContent = newValue;
+        display.textContent = char;
+        isFirstInput = false;
+        currDisplay = display.textContent;
+        return;
     }
 
     if (/*user inputs a notFirst number*/ !isFirstInput) {
         // concatenate the notFirst number to the end of the string
-        newValue += char;
-        display.textContent = newValue;
+        
+        display.textContent += char;
+        currDisplay = display.textContent;
+        console.log(currDisplay);
+        return;
     }
 
-    currDisplay = display.textContent;
+    
     
 }
 
@@ -103,13 +108,15 @@ function handleClick(e) {
         }
     }
 
-    
 
-    
 
-    if (btnType === 'digit') {
+    if (btnType === 'digit' && isFirstInput) {
+        updateDisplay(btnLabel);
+        
+    } else {
         updateDisplay(btnLabel);
     }
+    
 
     // What happens when picking an operator on a first calculation
     if (btnType === 'operator' && !isShowResult && lastResult === null) {
