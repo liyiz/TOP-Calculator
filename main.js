@@ -133,93 +133,29 @@ function handleClick(e) {
     
     // when OPERATORS are clicked
 
-    // What happens when picking an operator on a first calculation
+    if (btnType === 'operator' && isShowResult && !isWaitingForOperandB && !isShowResult) {
+
+    }
+
+    if (btnType === 'operator' && isShowResult && !isWaitingForOperandB && isShowResult) {
+
+    }
+
     if (btnType === 'operator' && !isShowResult && !isWaitingForOperandB && !isShowResult) {
-
-        operandA = parseInt(display.textContent);
-
-        manageOperator(btnLabel);
-
-        isFirstInput = true;
-        isWaitingForOperandB = true;
-
-        // reset display to take new input number
-        resetDisplay();
-    }
-
-    // What happens when picking an operator on a subsequent calculation
-    if (btnType === 'operator' && isShowResult && lastResult) {
-
-        operandA = parseInt(lastResult);
-
-        manageOperator(btnLabel);
-
-        isFirstInput = true;
-        isWaitingForOperandB = true;
-
-        updateDisplay(operandA);
-    }
-
-    // What happens when picking an operator to skip evaluation (operandA -> operator -> operandB -> operator -> result)
-    // We want it to operate on the existing operands and save the result as lastResult.
-    if (btnType === 'operator' && !isFirstInput && isWaitingForOperandB && !isShowResult) {
         
-        // the figure currDisplay will be operandB
-        operandB = parseInt(display.textContent);
-        isWaitingForOperandB = false;
-
-        manageOperator(btnLabel);
-
-        // evaluate the current operands
-        if (operator && operandA && operandB) {
-            const result = operate(operator, operandA, operandB);
-            isShowResult = true;
-            lastResult = result;
-            updateDisplay(result);
-            console.log({lastResult});
-        } else {
-            console.log("Cannot perform operation: Operands and/or operator missing.");
-            return;
-        }
-
-        return;
     }
 
-    // What happens when picking an operator for subsequent skip evaluations 
-    // (operandA -> operator -> operandB -> operator -> operandB ->
-    //                                      resultA  ->
-    if (btnType === 'operator' && !isFirstInput && !isWaitingForOperandB && isShowResult) {
-        // fill in operandA with previous result
-        operandA = lastResult;
-        // reset operandB ready to receive new value
-        operandB = parseInt(currDisplay); //or parseInt(display.textContent);
-
-        manageOperator(btnLabel);
-
-        // check that arguments exist as variables before calling function
-        if (operator && operandA && operandB) {
-            const result = operate(operator, operandA, operandB);
-            isShowResult = true;
-            lastResult = result;
-            updateDisplay(result);
-        } else {
-            console.log("Cannot perform operation: Operands and/or operator missing.");
-            return;
-        }
-
-        return;
+    if (btnType === 'operator' && isShowResult && isWaitingForOperandB && isShowResult) {
+        
     }
 
-    if (btnType === 'operator' && !isFirstInput && isWaitingForOperandB && isShowResult) {
-        console.log('I\'m stuck')
+    if (btnType === 'operator' && isShowResult && isWaitingForOperandB && !isShowResult) {
+        
     }
 
-    // // Once you have calculation result, start next calculation if operand is selected.
-    // if (btnType === 'digit' && isShowResult) {
-    //     clearMemory();
-    //     isShowResult = false;
-    //     updateDisplay(btnLabel);
-    // }
+    if (btnType === 'operator' && !isShowResult && !isWaitingForOperandB && isShowResult) {
+        
+    }
 
     console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isWaitingForOperandB, isShowResult})
 
