@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     resetDisplay();
 });
 
+const display = document.querySelector('#display');
 
 // state variables
 let currDisplay = '';
@@ -45,12 +46,15 @@ function updateDisplay(char = '0') {
     
     // Reset scenarios: first input, showing result, or zero as first character
     if (isFirstInput && char === '0') {
-        currDisplay = char;
+        currDisplay = '0';
     }
     else if (isFirstInput) {
         currDisplay = char;
         isFirstInput = false;
     } 
+    else if (isWaitingForOperandB) {
+        currDisplay = char;
+    }
     else if (isShowResult) {
         currDisplay = char;
         // isShowResult = false;
@@ -96,19 +100,20 @@ function handleClick(e) {
         }
     }
 
-    // operandA -> operator -> operandB -> result -> operator
+    
 
-    // operandA -> operator -> operandB -> operator ->
+    
 
     if (btnType === 'digit') {
         updateDisplay(btnLabel);
     }
 
     // What happens when picking an operator on a first calculation
-    if (btnType === 'operator' && !isShowResult) {
+    if (btnType === 'operator' && !isShowResult && lastResult === null) {
 
-        operandA = parseInt(display.textContent)
-        isFirstInput = true;
+        console.log("operator action type 01");
+        operandA = parseInt(display.textContent);
+        // isFirstInput = true; TODO
 
         manageOperator(btnLabel);
         // reset display to take new input number
@@ -116,17 +121,30 @@ function handleClick(e) {
         isWaitingForOperandB = true;
     }
 
+    // operandA -> operator -> operandB -> operator ->
+    if (btnType === 'operator' && !isShowResult && lastResult != null) {
+        console.log("I'm here")
+    }
+
+    // operandA -> operator -> operandB -> result -> operator
     // What happens when picking an operator on a result - user intends to chain calculation
     // TODO: Make sure to show the result, not just another zero
     if (btnType === 'operator' && isShowResult) {
+        
+        console.log("operator action type 02");
+
         manageOperator(btnLabel);
         operandA = lastResult; // -> then go to set operandB
         operandB = null;
         isWaitingForOperandB = true;
         isFirstInput = true;
-        isShowResult = false; 
-        // reset display to take new input number
+        isShowResult = false;
+
+        // updateDisplay(operandA);
+        // // reset display to take new input number
         resetDisplay();
+
+  
     }
 
     // Once you have calculation result, start next calculation if operand is selected.
