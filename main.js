@@ -28,7 +28,7 @@ function clearMemory() {
     operator = null;
     lastResult = null;
     isShowResult = false;
-    isFirstInput = true;
+    isFirstInput = true; // is first input after any event
     resetDisplay(); 
 }
 
@@ -62,16 +62,18 @@ function updateDisplay(char = '0') {
         return;
     }
 
-    if (/*user inputs a notFirst number*/ !isFirstInput) {
+    if (/*user inputs a notFirst number*/!isFirstInput && !isShowResult) {
         // concatenate the notFirst number to the end of the string
         
         display.textContent += char;
-        currDisplay = display.textContent;
-        console.log(currDisplay);
-        return;
+        return currDisplay = display.textContent;
+        // console.log(currDisplay);
     }
 
-    
+    if (/*user expects calculation result to display*/isShowResult) {
+        display.textContent = char;
+        return currDisplay = display.textContent;
+    }
     
 }
 
@@ -92,10 +94,19 @@ function handleClick(e) {
         clearMemory();
     }
 
+
+    // when EVALUATE is clicked
+
     if (btnLabel === '=') {
         inputValidation(); // TODO: Requirements for input validation phase of a calculation?
-        operandB = parseInt(display.textContent)
-        isWaitingForOperandB = false;
+
+        // if operandB has not been filled
+        if (isWaitingForOperandB) {
+            // fill in operandB
+            operandB = parseInt(display.textContent);
+            isWaitingForOperandB = false;
+        }
+
         // check that arguments exist as variables before calling function
         if (operator && operandA && operandB) {
             const result = operate(operator, operandA, operandB);
@@ -109,27 +120,35 @@ function handleClick(e) {
     }
 
 
+    // When DIGITs are clicked
 
     if (btnType === 'digit' && isFirstInput) {
         updateDisplay(btnLabel);
-        
-    } else {
+    } 
+    else if (btnType === 'digit') {
         updateDisplay(btnLabel);
     }
     
+    // when OPERATORS are clicked
 
     // What happens when picking an operator on a first calculation
     if (btnType === 'operator' && !isShowResult && lastResult === null) {
 
-        console.log("operator action type 01");
         operandA = parseInt(display.textContent);
-        // isFirstInput = true; TODO
 
         manageOperator(btnLabel);
+
+        isFirstInput = true;
+        isWaitingForOperandB = true;
+
         // reset display to take new input number
         resetDisplay();
-        isWaitingForOperandB = true;
     }
+
+
+
+
+
 
     // operandA -> operator -> operandB -> operator ->
     if (btnType === 'operator' && !isShowResult && lastResult != null) {
@@ -176,7 +195,12 @@ function inputValidation() {
 
 
 function operate(operation, a, b) {
+    
+    a = parseInt(a);
+    b = parseInt(b);
+
     let output = 0;
+
     if (operation === '+') {
         output = add(a, b);
     }
@@ -189,6 +213,7 @@ function operate(operation, a, b) {
     if (operation === '/') {
         output = divide(a, b);
     }
+    console.log("result is:", output)
     return output;
 }
 
