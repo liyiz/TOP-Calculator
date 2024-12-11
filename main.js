@@ -1,3 +1,10 @@
+// TODO: Fix bug with zero as operand in calculations
+// Replicate: Try to create calculation with a zero as an operand.
+// You are unable to evaluate a calculation so long as it uses
+// a zero.
+
+// TODO: Add edgecase for trying to divide by zero.
+
 // When page loads
 document.addEventListener("DOMContentLoaded", (event) => {
     setupEventListeners();
