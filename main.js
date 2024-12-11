@@ -65,11 +65,17 @@ function updateDisplay(char = '0') {
 
     if (/*user inputs a notFirst number*/!isFirstInput && !isShowResult) {
         // concatenate the notFirst number to the end of the string
-        console.log("HELLOO")
         display.textContent += char;
         currDisplay = display.textContent;
         return;
         // console.log(currDisplay);
+    }
+
+    if (!isFirstInput && isShowResult && isWaitingForOperandB) {
+        display.textContent = char;
+        currDisplay = display.textContent;
+        isShowResult = false;
+        return;        
     }
 
     if (/*user expects calculation result to display*/isShowResult) {
@@ -110,13 +116,6 @@ function handleClick(e) {
 
     }
 
-    // User clicks on a digit for either operands
-    // or User clicks on a digit for operandA
-    // isFirstInput handled in updateDisplay
-    if (btnType === 'digit' && !isShowResult && !isWaitingForOperandB) {
-        updateDisplay(btnLabel);
-    }
-
     // User clicks on an operator for first calculation &&
     // User clicks on an operator intending to chain calcuations after an evaluation
     if (btnType === 'operator' && !isFirstInput && !isShowResult && !isWaitingForOperandB) {
@@ -133,10 +132,14 @@ function handleClick(e) {
         resetDisplay();
 
     }
-
+    // User clicks on a digit for either operands
+    // or User clicks on a digit for operandA
     // User clicks on a digit for operandB
     // isFirstInput handled in updateDisplay
-    if (btnType === 'digit' && !isShowResult && isWaitingForOperandB) {
+    if (btnType === 'digit' && !isShowResult && !isWaitingForOperandB ||
+        btnType === 'digit' && !isShowResult && isWaitingForOperandB || 
+        btnType === 'digit' && isShowResult && isWaitingForOperandB
+    ) {
         updateDisplay(btnLabel);
     }
 
@@ -152,10 +155,17 @@ function handleClick(e) {
         operandA = lastResult;
         // 5. Clear operandB
         operandB = null;
+
+        isFirstInput = true;
+
         // 6. Update display with result
         updateDisplay(lastResult);
+
+        isShowResult = true;
         // 7. Assign new operator to operator variable
         manageOperator(btnLabel);
+
+        
     }
 
     // User clicks on evaluate to end all calculations
@@ -187,9 +197,9 @@ function validateInput() {
     // check that arguments exist as variables before calling function
     if (operator && operandA && operandB) {
         const result = operate(operator, operandA, operandB);
-        isShowResult = true;
+        
         lastResult = result;
-        updateDisplay(result);
+        // updateDisplay(result);
 
         // then clear operandA operandB operator variables?
 
