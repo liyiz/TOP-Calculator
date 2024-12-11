@@ -130,7 +130,10 @@ function handleClick(e) {
     }
 
     // User clicks on an operator intending to chain next calculation
-    if (btnType === 'operator' && !isFirstInput && !isShowResult && isWaitingForOperandB ) {
+    // User clicks on an operator intending to chain next calculation after an evaluation end
+    if (btnType === 'operator' && !isFirstInput && !isShowResult && isWaitingForOperandB ||
+        btnType === 'operator' && isFirstInput && isShowResult && !isWaitingForOperandB 
+    ) {
         
         // 1. First assign operandB with the latest user input
         operandB = parseInt(currDisplay); // or parseInt(display.textContent);
@@ -151,7 +154,8 @@ function handleClick(e) {
         // 7. Assign new operator to operator variable
         manageOperator(btnLabel);
 
-        
+        isWaitingForOperandB = true;
+
     }
 
     // User clicks on evaluate to end all calculations
@@ -170,6 +174,10 @@ function handleClick(e) {
         // 5. (Optional) clear operator, operandA and operandB variables
 
         isFirstInput = true;
+
+        operandA = null;
+        operandB = null;
+        operator = null;
         
     }
 
@@ -184,6 +192,8 @@ function handleClick(e) {
 
     console.table({currDisplay, isFirstInput, isShowResult, isWaitingForOperandB, operandA, operandB, operator, lastResult })
 
+
+    // TODO: How subsequent evaluates are handled.
 
 }
 
