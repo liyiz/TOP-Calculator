@@ -1,8 +1,6 @@
 // When page loads
 document.addEventListener("DOMContentLoaded", (event) => {
-    // console.log("DOM fully loaded and parsed");
     setupEventListeners();
-
     resetDisplay();
 });
 
@@ -37,7 +35,6 @@ function resetDisplay() {
 }
 
 function manageOperator(input) {
-    console.log("Received operator:", input);
     operator = input;
 }
 
@@ -53,8 +50,6 @@ function updateDisplay(char = '0') {
         return;
     }
 
-    // TODO: Stop zeros from concatenating when it is the first digit on display.
-
     if (/*user inputs any other number AND it is the first input*/char != '0' && isFirstInput) {
         // display the input number
         display.textContent = char;
@@ -68,7 +63,6 @@ function updateDisplay(char = '0') {
         display.textContent += char;
         currDisplay = display.textContent;
         return;
-        // console.log(currDisplay);
     }
 
     if (!isFirstInput && isShowResult && isWaitingForOperandB) {
@@ -88,15 +82,10 @@ function updateDisplay(char = '0') {
 
 function handleClick(e) {
 
-    // TODO: See about refactoring and breaking up this function into smaller ones
-
-    // console.log(e.target.dataset.type);
-
     // data to assess and pass to functions
     const btnLabel = e.target.dataset.label;
     // data group or type to check
     const btnType = e.target.dataset.type;
-
 
     if (btnLabel === 'clear') {
         clearMemory();
@@ -181,19 +170,7 @@ function handleClick(e) {
         
     }
 
-    // User clicks on an operator intending to chain calcuations after an evaluation
-    // if (btnType === 'operator' && !isFirstInput && !isWaitingForOperandB && isShowResult) {
-    
-        // assign to operator
-        // isFirstInput = true;
-        // isWaitingForOperandB = true;
-        // isShowResult = false;
-    // }
-
     console.table({currDisplay, isFirstInput, isShowResult, isWaitingForOperandB, operandA, operandB, operator, lastResult })
-
-
-    // TODO: How subsequent evaluates are handled.
 
 }
 
@@ -206,8 +183,6 @@ function validateInput() {
         
         lastResult = result;
         // updateDisplay(result);
-
-        // then clear operandA operandB operator variables?
 
     } else {
         console.log("Cannot perform operation: Operands and/or operator missing.");
@@ -256,7 +231,6 @@ function divide(a, b) {
 }
 
 function setupEventListeners() {
-    // const allBtns = document.querySelector('.calcBtn');
     const allBtns = document.querySelectorAll('.calcBtn');
     allBtns.forEach((el) => {el.addEventListener('click', handleClick);})
 }
