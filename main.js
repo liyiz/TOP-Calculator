@@ -96,12 +96,8 @@ function handleClick(e) {
         clearMemory();
     }
 
-
-    // when EVALUATE is clicked
-
     if (btnLabel === '=') {
-        //inputValidation(); // TODO: Requirements for input validation phase of a calculation?
-
+        
         // if operandB has not been filled
         if (isWaitingForOperandB) {
             // fill in operandB
@@ -109,16 +105,8 @@ function handleClick(e) {
             isWaitingForOperandB = false;
         }
 
-        // check that arguments exist as variables before calling function
-        if (operator && operandA && operandB) {
-            const result = operate(operator, operandA, operandB);
-            isShowResult = true;
-            lastResult = result;
-            updateDisplay(result);
-        } else {
-            console.log("Cannot perform operation: Operands and/or operator missing.");
-            return;
-        }
+        inputValidation();
+
     }
 
     // User clicks on a digit for either operands
@@ -199,6 +187,19 @@ function handleClick(e) {
 
 function inputValidation() {
     // function to validate calculator state before proceeding to operate()
+    // check that arguments exist as variables before calling function
+    if (operator && operandA && operandB) {
+        const result = operate(operator, operandA, operandB);
+        isShowResult = true;
+        lastResult = result;
+        updateDisplay(result);
+
+        // then clear operandA operandB operator variables?
+
+    } else {
+        console.log("Cannot perform operation: Operands and/or operator missing.");
+        return;
+    }
 }
 
 
