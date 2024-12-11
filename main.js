@@ -102,20 +102,6 @@ function handleClick(e) {
         clearMemory();
     }
 
-    // Evaluation
-    if (btnLabel === '=') {
-        
-        // if operandB has not been filled
-        if (isWaitingForOperandB) {
-            // fill in operandB
-            operandB = parseInt(display.textContent);
-            isWaitingForOperandB = false;
-        }
-
-        validateInput();
-
-    }
-
     // User clicks on an operator for first calculation &&
     // User clicks on an operator intending to chain calcuations after an evaluation
     if (btnType === 'operator' && !isFirstInput && !isShowResult && !isWaitingForOperandB) {
@@ -149,8 +135,8 @@ function handleClick(e) {
         // 1. First assign operandB with the latest user input
         operandB = parseInt(currDisplay); // or parseInt(display.textContent);
         // 2. Then operate existing pair of operands and operator
-        validateInput();
         // 3. Save the result into lastResult
+        validateInput();
         // 4. Assign lastResult to operandA
         operandA = lastResult;
         // 5. Clear operandB
@@ -169,12 +155,22 @@ function handleClick(e) {
     }
 
     // User clicks on evaluate to end all calculations
-    if (btnType === '=' && isFirstInput && !isShowResult && isWaitingForOperandB ) {
+    // isShowResult could be true or false for this to fire
+    if (btnLabel === '=' && !isFirstInput && isWaitingForOperandB ) {
 
+        // 1. Assign operandB with latest user input
+        operandB = parseInt(currDisplay); // or parseInt(display.textContent);
+        // 2. Operate existing pair of operands and operator
+        // 3. Save the result into lastResult
+        validateInput();
+        isWaitingForOperandB = false;
+        isShowResult = true;
+        // 4. Update display with result
+        updateDisplay(lastResult);
+        // 5. (Optional) clear operator, operandA and operandB variables
+
+        isFirstInput = true;
         
-        // isFirstInput = true;
-        // isWaitingForOperandB = true;
-        // isShowResult = true;
     }
 
     // User clicks on an operator intending to chain calcuations after an evaluation
