@@ -28,6 +28,7 @@ function clearMemory() {
     lastResult = null;
     isShowResult = false;
     isFirstInput = true; // is first input after any event
+    isWaitingForOperandB = false;
     resetDisplay(); 
 }
 
@@ -90,7 +91,6 @@ function handleClick(e) {
     // data group or type to check
     const btnType = e.target.dataset.type;
 
-    const display = document.querySelector('#display');
 
     if (btnLabel === 'clear') {
         clearMemory();
