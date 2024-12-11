@@ -65,7 +65,7 @@ function updateDisplay(char = '0') {
 
     if (/*user inputs a notFirst number*/!isFirstInput && !isShowResult) {
         // concatenate the notFirst number to the end of the string
-        
+        console.log("HELLOO")
         display.textContent += char;
         currDisplay = display.textContent;
         return;
@@ -106,22 +106,20 @@ function handleClick(e) {
             isWaitingForOperandB = false;
         }
 
-        inputValidation();
+        validateInput();
 
     }
 
     // User clicks on a digit for either operands
     // or User clicks on a digit for operandA
     // isFirstInput handled in updateDisplay
-    if (btnType === 'digit' && !isWaitingForOperandB && !isShowResult) {
-        // update display
+    if (btnType === 'digit' && !isShowResult && !isWaitingForOperandB) {
         updateDisplay(btnLabel);
     }
 
     // User clicks on an operator for first calculation &&
     // User clicks on an operator intending to chain calcuations after an evaluation
-    if (btnType === 'operator' && !isFirstInput && !isWaitingForOperandB && !isShowResult) {
-  
+    if (btnType === 'operator' && !isFirstInput && !isShowResult && !isWaitingForOperandB) {
 
         // assign operandA - either by previous input, or lastResult
         operandA = parseInt(currDisplay); // or parseInt(display.textContent);
@@ -134,29 +132,31 @@ function handleClick(e) {
         // update display to show operator has been parsed
         resetDisplay();
 
-
     }
 
     // User clicks on a digit for operandB
-    if (btnType === 'digit' && !isFirstInput && !isWaitingForOperandB && !isShowResult) {
-        // update display
-        // assign to operandB
-        // isFirstInput = false;
-        // isWaitingForOperandB = true;
-        // isShowResult = false;
+    // isFirstInput handled in updateDisplay
+    if (btnType === 'digit' && !isShowResult && isWaitingForOperandB) {
+        updateDisplay(btnLabel);
     }
 
     // User clicks on an operator intending to chain next calculation
-    if (btnType === 'operator' && isFirstInput && isWaitingForOperandB && isShowResult) {
+    if (btnType === 'operator' && !isFirstInput && !isShowResult && isWaitingForOperandB ) {
         
-        // assign to operator
-        // isFirstInput = true;
-        // isWaitingForOperandB = false;
-        // isShowResult = true;
+        // 1. First assign operandB with the latest user input
+        operandB = parseInt(currDisplay); // or parseInt(display.textContent);
+        // 2. Then operate existing pair of operands and operator
+        validateInput();
+        // 3. Save the result into lastResult
+        // 4. Assign lastResult to operandA
+        // 5. Clear operandB
+        // 6. Update display with result
+        // 7. Assign new operator to operator variable
+
     }
 
     // User clicks on evaluate to end all calculations
-    if (btnType === '=' && isFirstInput && isWaitingForOperandB && !isShowResult) {
+    if (btnType === '=' && isFirstInput && !isShowResult && isWaitingForOperandB ) {
 
         
         // isFirstInput = true;
@@ -179,7 +179,7 @@ function handleClick(e) {
 }
 
 
-function inputValidation() {
+function validateInput() {
     // function to validate calculator state before proceeding to operate()
     // check that arguments exist as variables before calling function
     if (operator && operandA && operandB) {
