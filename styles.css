@@ -17,10 +17,10 @@ body {
 }
 
 main {
-    /* border: 1px solid red; */
+    border: 1px solid gray;
     width: 320px;
     height: 480px;
-    padding: 1px; /*Fixes missing pixel that breaks flexbox layout*/
+    /* padding: 1px; Fixes missing pixel that breaks flexbox layout */
 
     display: flex;
     flex-direction: column;
@@ -43,19 +43,18 @@ main {
 
 #buttons {
 
-
     flex: 4;
 
     display: flex;
     align-items: stretch;
 
-    
 }
 
 #buttons button.calcBtn {
     
     flex: 1 1 60px;
 
+    border: 1px solid gray;
 }
 
 #buttons button.number.zero { 
@@ -100,4 +99,11 @@ main {
 #operators .operator {
     background-color: lightblue;
 
+}
+
+#buttons button:disabled,
+#buttons button[disabled] {
+    background-color: lightgray;
+    color: gray;
+    
 }
