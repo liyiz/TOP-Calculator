@@ -11,7 +11,6 @@ const display = document.querySelector('#display');
 // state variables
 let currDisplay = '';
 let isFirstInput = true;
-let isAwaitOperand = true;
 let isShowResult = false;
 let isWaitingForOperandB = false;
 
@@ -42,7 +41,6 @@ function manageOperator(input) {
 }
 
 function updateDisplay(char = '0') {
-    
 
     // display zero to start with
 
@@ -53,6 +51,8 @@ function updateDisplay(char = '0') {
         currDisplay = display.textContent;
         return;
     }
+
+    // TODO: Stop zeros from concatenating when it is the first digit on display.
 
     if (/*user inputs any other number AND it is the first input*/char != '0' && isFirstInput) {
         // display the input number
@@ -121,41 +121,75 @@ function handleClick(e) {
         }
     }
 
-
-    // When DIGITs are clicked
-
-    if (btnType === 'digit' && isFirstInput) {
-        updateDisplay(btnLabel);
-    } 
-    else if (btnType === 'digit') {
+    // User clicks on a digit for either operands
+    if (btnType === 'digit' && !isFirstInput && !isWaitingForOperandB && !isShowResult) {
+        // update display
         updateDisplay(btnLabel);
     }
+
+    // User clicks on a digit for operandA
+    if (btnType === 'digit' && isFirstInput && !isWaitingForOperandB && !isShowResult) {
+        // update display
+        updateDisplay(btnLabel);
+        // assign to operandA
+        isFirstInput = false;
+        // isWaitingForOperandB = false;
+        // isShowResult = false;
+    }
+
+    // User clicks on an operator for first calculation &&
+    // User clicks on an operator intending to chain calcuations after an evaluation
+    if (btnType === 'operator' && !isFirstInput && !isWaitingForOperandB && !isShowResult) {
+  
+        // assign to operator
+        manageOperator(btnLabel);
+
+        // assign operandA - either by previous input, or lastResult
+        operandA = parseInt(currDisplay); // or parseInt(display.textContent);
+
+        // update display to show operator has been parsed
+        updateDisplay();
+
+        // isFirstInput = false;
+        isWaitingForOperandB = true;
+        // isShowResult = false;
+    }
+
+    // User clicks on a digit for operandB
+    if (btnType === 'digit' && !isFirstInput && !isWaitingForOperandB && !isShowResult) {
+        // update display
+        // assign to operandB
+        // isFirstInput = false;
+        // isWaitingForOperandB = true;
+        // isShowResult = false;
+    }
+
+    // User clicks on an operator intending to chain next calculation
+    if (btnType === 'operator' && isFirstInput && isWaitingForOperandB && isShowResult) {
+        
+        // assign to operator
+        // isFirstInput = true;
+        // isWaitingForOperandB = false;
+        // isShowResult = true;
+    }
+
+    // User clicks on evaluate to end all calculations
+    if (btnType === '=' && isFirstInput && isWaitingForOperandB && !isShowResult) {
+
+        
+        // isFirstInput = true;
+        // isWaitingForOperandB = true;
+        // isShowResult = true;
+    }
+
+    // User clicks on an operator intending to chain calcuations after an evaluation
+    // if (btnType === 'operator' && !isFirstInput && !isWaitingForOperandB && isShowResult) {
     
-    // when OPERATORS are clicked
-
-    if (btnType === 'operator' && isShowResult && !isWaitingForOperandB && !isShowResult) {
-
-    }
-
-    if (btnType === 'operator' && isShowResult && !isWaitingForOperandB && isShowResult) {
-
-    }
-
-    if (btnType === 'operator' && !isShowResult && !isWaitingForOperandB && !isShowResult) {
-        
-    }
-
-    if (btnType === 'operator' && isShowResult && isWaitingForOperandB && isShowResult) {
-        
-    }
-
-    if (btnType === 'operator' && isShowResult && isWaitingForOperandB && !isShowResult) {
-        
-    }
-
-    if (btnType === 'operator' && !isShowResult && !isWaitingForOperandB && isShowResult) {
-        
-    }
+        // assign to operator
+        // isFirstInput = true;
+        // isWaitingForOperandB = true;
+        // isShowResult = false;
+    // }
 
     console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isWaitingForOperandB, isShowResult})
 
