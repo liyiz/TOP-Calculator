@@ -122,18 +122,19 @@ function handleClick(e) {
     // User clicks on an operator intending to chain calcuations after an evaluation
     if (btnType === 'operator' && !isFirstInput && !isWaitingForOperandB && !isShowResult) {
   
-        // assign to operator
-        manageOperator(btnLabel);
 
         // assign operandA - either by previous input, or lastResult
         operandA = parseInt(currDisplay); // or parseInt(display.textContent);
+        // assign to operator
+        manageOperator(btnLabel);
+
+        isFirstInput = true;
+        isWaitingForOperandB = true;
 
         // update display to show operator has been parsed
-        updateDisplay();
+        resetDisplay();
 
-        // isFirstInput = false;
-        isWaitingForOperandB = true;
-        // isShowResult = false;
+
     }
 
     // User clicks on a digit for operandB
@@ -172,7 +173,7 @@ function handleClick(e) {
         // isShowResult = false;
     // }
 
-    console.table({operandA, operandB, operator, lastResult, currDisplay, isFirstInput, isWaitingForOperandB, isShowResult})
+    console.table({currDisplay, isFirstInput, isShowResult, isWaitingForOperandB, operandA, operandB, operator, lastResult })
 
 
 }
