@@ -96,6 +96,7 @@ function handleClick(e) {
         clearMemory();
     }
 
+    // Evaluation
     if (btnLabel === '=') {
         
         // if operandB has not been filled
@@ -110,19 +111,11 @@ function handleClick(e) {
     }
 
     // User clicks on a digit for either operands
-    if (btnType === 'digit' && !isFirstInput && !isWaitingForOperandB && !isShowResult) {
+    // or User clicks on a digit for operandA
+    // isFirstInput handled in updateDisplay
+    if (btnType === 'digit' && !isWaitingForOperandB && !isShowResult) {
         // update display
         updateDisplay(btnLabel);
-    }
-
-    // User clicks on a digit for operandA
-    if (btnType === 'digit' && isFirstInput && !isWaitingForOperandB && !isShowResult) {
-        // update display
-        updateDisplay(btnLabel);
-        // assign to operandA
-        isFirstInput = false;
-        // isWaitingForOperandB = false;
-        // isShowResult = false;
     }
 
     // User clicks on an operator for first calculation &&
