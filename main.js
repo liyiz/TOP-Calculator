@@ -149,10 +149,13 @@ function handleClick(e) {
         validateInput();
         // 3. Save the result into lastResult
         // 4. Assign lastResult to operandA
+        operandA = lastResult;
         // 5. Clear operandB
+        operandB = null;
         // 6. Update display with result
+        updateDisplay(lastResult);
         // 7. Assign new operator to operator variable
-
+        manageOperator(btnLabel);
     }
 
     // User clicks on evaluate to end all calculations
