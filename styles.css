@@ -17,9 +17,10 @@ body {
 }
 
 main {
-    border: 1px solid red;
+    /* border: 1px solid red; */
     width: 320px;
     height: 480px;
+    padding: 1px; /*Fixes missing pixel that breaks flexbox layout*/
 
     display: flex;
     flex-direction: column;
@@ -27,7 +28,7 @@ main {
 }
 
 #display {
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     background-color: grey;
 
     width: 100%;
@@ -68,7 +69,7 @@ main {
 }
 
 #inputs {
-    border: 1px solid rebeccapurple;
+    /* border: 1px solid rebeccapurple; */
     background-color: rebeccapurple;
 
     flex: 3;
@@ -86,7 +87,7 @@ main {
 
 
 #operators {
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     background-color: orange;
 
     flex: 1;
