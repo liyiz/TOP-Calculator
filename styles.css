@@ -36,10 +36,14 @@ main {
     flex: 1;
     padding: 1rem;
 
-    font-size: 5rem;
+    font-size: 4rem;
     text-align: right;
     vertical-align: middle;
     overflow: hidden;
+
+    display: flex;
+    justify-content: end;
+    align-items: center;
 }
 
 #buttons {
