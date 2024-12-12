@@ -122,7 +122,8 @@ function handleClick(e) {
     // isFirstInput handled in updateDisplay
     if (btnType === 'digit' && !isShowResult && !isWaitingForOperandB ||
         btnType === 'digit' && !isShowResult && isWaitingForOperandB || 
-        btnType === 'digit' && isShowResult && isWaitingForOperandB
+        btnType === 'digit' && isShowResult && isWaitingForOperandB ||
+        btnType === 'digit' && isShowResult && !isWaitingForOperandB // User clicks on a digit after error evaluation
     ) {
         updateDisplay(btnLabel);
     }
@@ -158,7 +159,7 @@ function handleClick(e) {
 
     // User clicks on evaluate to end all calculations
     // isShowResult could be true or false for this to fire
-    if (btnLabel === '=' && !isFirstInput && isWaitingForOperandB ) {
+    if (btnLabel === '=' /* && !isFirstInput */ && isWaitingForOperandB) {
 
         // 1. Assign operandB with latest user input
         operandB = parseInt(currDisplay); // or parseInt(display.textContent);
@@ -171,6 +172,7 @@ function handleClick(e) {
         updateDisplay(lastResult);
         // 5. (Optional) clear operator, operandA and operandB variables
 
+        isShowResult = false; // to deal with error evaluation with divide by 0
         isFirstInput = true;
 
         operandA = null;
@@ -220,6 +222,11 @@ function operate(operation, a, b) {
         output = multiply(a, b);
     }
     if (operation === '/') {
+        // TODO edgecase for divide by zero
+        if (a === 0 || b === 0) {
+            return output = 'ERROR';
+        }
+
         output = divide(a, b);
     }
     console.log('result is:', a, operation, b, '=', output)
