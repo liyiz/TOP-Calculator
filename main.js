@@ -100,7 +100,9 @@ function handleClick(e) {
 
     // User clicks on an operator for first calculation &&
     // User clicks on an operator intending to chain calcuations after an evaluation
-    if (btnType === 'operator' && !isFirstInput && !isShowResult && !isWaitingForOperandB) {
+    if (btnType === 'operator' && !isFirstInput && !isShowResult && !isWaitingForOperandB ||
+        btnType === 'operator' && isFirstInput && !isShowResult && !isWaitingForOperandB
+    ) {
 
         // assign operandA - either by previous input, or lastResult
         operandA = parseInt(currDisplay); // or parseInt(display.textContent);
@@ -185,7 +187,10 @@ function handleClick(e) {
 function validateInput() {
     // function to validate calculator state before proceeding to operate()
     // check that arguments exist as variables before calling function
-    if (operator && operandA && operandB) {
+    if (operator && operandA && operandB || 
+        operator && operandA === 0 && operandB ||
+        operator && operandA && operandB === 0
+    ) {
         const result = operate(operator, operandA, operandB);
         
         lastResult = result;
