@@ -191,7 +191,16 @@ function validateInput() {
     ) {
         const result = operate(operator, operandA, operandB);
         
+        let strTypecastToNum = (num) => { 
+            return (num === '.') ? '.' : Number(num);
+        };
+
+        let resultArray = Array.from(String(result), strTypecastToNum);
+        console.log("resultArray:", resultArray, result);
         // check if result has long decimals
+        if (resultArray > 9) {
+            console.log("resultArray:", resultArray, result);
+        }
         // How do I check how many figures a number has?
         // Check how many numbers past the decimal point
         // Create a function to round up to as many decimal places as the display can handle
