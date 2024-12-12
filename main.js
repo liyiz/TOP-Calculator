@@ -1,6 +1,5 @@
 // TODO: Round long decimal numbers 
-// TODO: Deal with overflow figures
-// TODO: Check when clicking = prematurely
+// TODO: Deal with overflow figures (display only shows up to 9 figures before overflowing)
 
 // When page loads
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -192,6 +191,11 @@ function validateInput() {
     ) {
         const result = operate(operator, operandA, operandB);
         
+        // check if result has long decimals
+        // How do I check how many figures a number has?
+        // Check how many numbers past the decimal point
+        // Create a function to round up to as many decimal places as the display can handle
+
         lastResult = result;
         // updateDisplay(result);
 
