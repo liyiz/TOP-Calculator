@@ -189,17 +189,26 @@ function validateInput() {
         operator && operandA === 0 && operandB ||
         operator && operandA && operandB === 0
     ) {
-        const result = operate(operator, operandA, operandB);
+        let result = operate(operator, operandA, operandB);
         
         let strTypecastToNum = (num) => { 
             return (num === '.') ? '.' : Number(num);
         };
 
-        let resultArray = Array.from(String(result), strTypecastToNum);
-        console.log("resultArray:", resultArray, result);
+        // let resultArray = Array.from(String(result), strTypecastToNum); // returns as array of numbers
+        let resultArray = String(result); // returns as array of strings
         // check if result has long decimals
-        if (resultArray > 9) {
+        if (resultArray.length > 9) {
             console.log("resultArray:", resultArray, result);
+            /* //Code for if we want to factor in the integers for figure length too
+            const splitFromDot = resultArray.split('.');
+            console.log(splitFromDot); // e.g. ['3', '3333333333333335']  */
+            // do we need to know where the decimal point is?
+            // we need to cut off any figures that leave an array larger than 9 indexes
+            // edgecase: What if decimal point is not in the cut off?
+
+            // Simpler approach - just round up to only 2 decimal places only.
+            result = Number.parseFloat(result).toFixed(2);
         }
         // How do I check how many figures a number has?
         // Check how many numbers past the decimal point
